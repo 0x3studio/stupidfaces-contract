@@ -1,16 +1,14 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-const weiToEth = (n: number) => n / 1000000000000000000;
-const roundThreeDecimals = (n: number) => Math.round(n * 1000) / 1000;
-
-let owner: any, addr1: any, stupidFaces: any;
+let owner: any, addr1: any, addr2: any, stupidFaces: any;
 
 describe("StupidFaces", function () {
   before(async () => {
-    const [_owner, _addr1] = await ethers.getSigners();
+    const [_owner, _addr1, _addr2] = await ethers.getSigners();
     owner = _owner;
     addr1 = _addr1;
+    addr2 = _addr2;
 
     const StupidFaces = await ethers.getContractFactory("StupidFaces");
     stupidFaces = await StupidFaces.deploy();
@@ -57,5 +55,13 @@ describe("StupidFaces", function () {
     const balance = await stupidFaces.balanceOf(addr1.address);
 
     expect(balance.toNumber()).to.equal(5);
+  });
+
+  it("Should allow airdropping of ERC721 token", async () => {
+    await stupidFaces.airdrop(addr2.address, 3);
+
+    const balance = await stupidFaces.balanceOf(addr2.address);
+
+    expect(balance.toNumber()).to.equal(3);
   });
 });

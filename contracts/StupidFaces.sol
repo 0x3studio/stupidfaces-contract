@@ -58,6 +58,26 @@ contract StupidFaces is ERC721A, Ownable {
         _safeMint(addr, _quantity);
     }
 
+    function airdrop(address _addr, uint256 _quantity) external onlyOwner {
+        require(
+            amountNFTsPerWallet[_addr] + _quantity <= individualLimit,
+            string(
+                abi.encodePacked(
+                    "You can only get ",
+                    Strings.toString(individualLimit),
+                    " NFTs on the public sale"
+                )
+            )
+        );
+        require(
+            totalMinted + _quantity <= MAX_SUPPLY,
+            "Maximum supply exceeded"
+        );
+        totalMinted += _quantity;
+        amountNFTsPerWallet[_addr] += _quantity;
+        _safeMint(_addr, _quantity);
+    }
+
     // Utils
 
     function tokenURI(uint256 _tokenId)
