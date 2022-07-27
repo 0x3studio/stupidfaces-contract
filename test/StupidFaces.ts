@@ -36,6 +36,8 @@ describe("StupidFaces", function () {
   });
 
   it("Should not allow minting of ERC721 token if individual limit reached", async () => {
+    const limit = await stupidFaces.getIndividualLimit();
+
     const mint = async () => {
       await stupidFaces.connect(addr1).mint(20, {
         value: ethers.utils.parseEther("0.02"),
@@ -43,7 +45,7 @@ describe("StupidFaces", function () {
     };
 
     await expect(mint()).eventually.to.rejectedWith(
-      "You can only get 10 NFTs on the public sale"
+      `You can only get ${limit.toNumber()} NFTs on the public sale`
     );
   });
 
