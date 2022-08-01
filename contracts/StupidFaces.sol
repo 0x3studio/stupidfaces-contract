@@ -22,8 +22,6 @@ contract StupidFaces is ERC721A, Ownable {
     uint256 public individualLimit = 10;
     uint256 public totalMinted = 0;
 
-    address tokenAddress;
-
     mapping(address => uint256) public amountNFTsPerWallet;
 
     string private _name = "Stupid Faces";
