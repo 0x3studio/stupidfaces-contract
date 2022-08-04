@@ -34,7 +34,6 @@ contract StupidFaces is ERC721A, Ownable {
     function mint(uint256 _quantity) external payable {
         address addr = msg.sender;
         uint256 price = salePrice;
-        require(price != 0, "Price is 0");
         require(currentStep == Step.Sale, "Public sale is not active");
         require(
             amountNFTsPerWallet[addr] + _quantity <= individualLimit,
