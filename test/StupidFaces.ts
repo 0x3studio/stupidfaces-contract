@@ -1,6 +1,8 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
+const BASE_URI = "ipfs://xyz/";
+
 let owner: any, addr1: any, addr2: any, stupidFaces: any;
 
 describe("StupidFaces", function () {
@@ -55,6 +57,20 @@ describe("StupidFaces", function () {
     const balance = await stupidFaces.balanceOf(addr1.address);
 
     expect(balance.toNumber()).to.equal(5);
+  });
+
+  it("Should allow setting the baseURI and getting a tokenURI", async () => {
+    stupidFaces.setBaseURI(BASE_URI);
+
+    const tokenURI = await stupidFaces.tokenURI(1);
+
+    expect(tokenURI).to.equal(`${BASE_URI}1`);
+  });
+
+  it("Should not allow getting a tokenURI for a nonexistent token", async () => {
+    await expect(stupidFaces.tokenURI(666)).eventually.to.rejectedWith(
+      `URI query for nonexistent token`
+    );
   });
 
   it("Should allow airdropping of ERC721 token", async () => {
