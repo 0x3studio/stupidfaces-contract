@@ -65,7 +65,7 @@ describe("StupidFaces", function () {
     expect(balance.toNumber()).to.equal(5);
   });
 
-  it("Should allow getting a tokenURI for an existent token", async () => {
+  it("Should allow setting the base URI and getting a token URI for an existent token", async () => {
     stupidFaces.setBaseURI(BASE_URI);
 
     const tokenURI = await stupidFaces.tokenURI(1);
@@ -73,9 +73,15 @@ describe("StupidFaces", function () {
     expect(tokenURI).to.equal(`${BASE_URI}1`);
   });
 
-  it("Should not allow getting a tokenURI for a nonexistent token", async () => {
+  it("Should not allow setting the base URI if it is already set", async () => {
+    await expect(stupidFaces.setBaseURI(BASE_URI)).eventually.to.rejectedWith(
+      "You can only set the base URI once"
+    );
+  });
+
+  it("Should not allow getting a token URI for a nonexistent token", async () => {
     await expect(stupidFaces.tokenURI(666)).eventually.to.rejectedWith(
-      `URI query for nonexistent token`
+      "URI query for nonexistent token"
     );
   });
 

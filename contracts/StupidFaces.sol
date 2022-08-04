@@ -88,6 +88,10 @@ contract StupidFaces is ERC721A, Ownable {
     // Getters and setters
 
     function setBaseURI(string memory _baseURI) external onlyOwner {
+        require(
+            bytes(baseURI).length == 0,
+            "You can only set the base URI once"
+        );
         baseURI = _baseURI;
     }
 
