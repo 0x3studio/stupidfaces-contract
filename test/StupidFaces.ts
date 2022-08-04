@@ -25,6 +25,12 @@ describe("StupidFaces", function () {
     expect(currentStep).to.equal(1);
   });
 
+  it("Should not allow setting the current step to a previous step", async () => {
+    await expect(stupidFaces.setCurrentStep(0)).eventually.to.rejectedWith(
+      "You can only go forward"
+    );
+  });
+
   it("Should not allow minting of ERC721 token if not enough funds sent", async () => {
     const mint = async () => {
       await stupidFaces.connect(addr1).mint(5, {
@@ -59,7 +65,7 @@ describe("StupidFaces", function () {
     expect(balance.toNumber()).to.equal(5);
   });
 
-  it("Should allow setting the baseURI and getting a tokenURI", async () => {
+  it("Should allow getting a tokenURI for an existent token", async () => {
     stupidFaces.setBaseURI(BASE_URI);
 
     const tokenURI = await stupidFaces.tokenURI(1);

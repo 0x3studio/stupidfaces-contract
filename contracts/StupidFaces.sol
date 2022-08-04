@@ -24,10 +24,7 @@ contract StupidFaces is ERC721A, Ownable {
 
     mapping(address => uint256) public amountNFTsPerWallet;
 
-    string private _name = "Stupid Faces";
-    string private _symbol = "STF";
-
-    constructor() ERC721A(_name, _symbol) {}
+    constructor() ERC721A("Stupid Faces", "STF") {}
 
     // Mint
 
@@ -88,10 +85,6 @@ contract StupidFaces is ERC721A, Ownable {
         return string(abi.encodePacked(baseURI, Strings.toString(_tokenId)));
     }
 
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
     // Getters and setters
 
     function setBaseURI(string memory _baseURI) external onlyOwner {
@@ -119,6 +112,7 @@ contract StupidFaces is ERC721A, Ownable {
     }
 
     function setCurrentStep(uint256 _currentStep) external onlyOwner {
+        require(_currentStep > uint256(currentStep), "You can only go forward");
         currentStep = Step(_currentStep);
     }
 
@@ -128,7 +122,7 @@ contract StupidFaces is ERC721A, Ownable {
 
     // Withdraw
 
-    function withdraw() external payable onlyOwner {
+    function withdraw() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
 
